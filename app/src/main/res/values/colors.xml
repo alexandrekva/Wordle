@@ -7,9 +7,4 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-
-    <color name="RaisinBlack">#FF1A1B25</color>
-    <color name="Fawn">#FFE6AA68</color>
-    <color name="BudGreen">#FF7FB069</color>
-    <color name="BattleshipGrey">#7D7E75</color>
 </resources>

@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.wordle.feature_game.domain.models.CheckCharEnum
+import com.example.wordle.feature_game.domain.models.GameResult
 import com.example.wordle.feature_game.domain.models.Guess
 import com.example.wordle.feature_game.domain.models.GuessChar
 
@@ -19,13 +20,13 @@ class GameViewModel : ViewModel() {
     var currentGuess = mutableStateOf(0)
         private set
 
-    var currentChar = mutableStateOf(0)
-        private set
-
     var wrongChars = mutableStateListOf<Char>()
         private set
 
-    var correctGuess = mutableStateOf(false)
+    var gameStatus = mutableStateOf(GameResult.PLAYING)
+        private set
+
+    var gameStarted = false
         private set
 
     private var word = "barco"
@@ -34,35 +35,49 @@ class GameViewModel : ViewModel() {
         for (i in 1..MAX_GUESSES) {
             guesses.add(Guess())
         }
+
+        gameStarted = true
+    }
+
+    fun resetGame() {
+        gameStatus.value = GameResult.PLAYING
+        wrongChars.clear()
+        currentGuess.value = 0
+
+        guesses.clear()
+        for (i in 1..MAX_GUESSES) {
+            guesses.add(Guess())
+        }
     }
 
     fun insertChar(char: Char) {
-        guesses[currentGuess.value].insertChar(char, currentChar)
+        guesses[currentGuess.value].insertChar(char)
         updateGuessState()
     }
 
     fun deleteChar() {
-        guesses[currentGuess.value].deleteChar(currentChar)
+        guesses[currentGuess.value].deleteChar()
         updateGuessState()
     }
 
-    fun setCorrectGuess() {
-        correctGuess.value = false
+    fun setGameStatus(status: GameResult) {
+        gameStatus.value = status
     }
 
     fun checkGuess() {
-        if (currentChar.value == Guess.GUESS_SIZE && !guesses[currentGuess.value].guess.contains(
-                GuessChar()
-            )
-        ) {
-            if (guesses[currentGuess.value].checkGuess(word)) {
-                correctGuess.value = true
-            } else {
-                addWrongChars(guesses[currentGuess.value].guess)
-                currentChar.value = 0
-                currentGuess.value++
+        if (!guesses[currentGuess.value].guess.contains(GuessChar())) {
+            when {
+                guesses[currentGuess.value].checkGuess(word) -> {
+                    gameStatus.value = GameResult.WON
+                }
+                currentGuess.value == MAX_GUESSES - 1 -> {
+                    gameStatus.value = GameResult.LOST
+                }
+                else -> {
+                    addWrongChars(guesses[currentGuess.value].guess)
+                    currentGuess.value++
+                }
             }
-
             updateGuessState()
         }
     }

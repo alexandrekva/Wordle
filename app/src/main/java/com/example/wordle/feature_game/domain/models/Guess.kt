@@ -1,6 +1,7 @@
 package com.example.wordle.feature_game.domain.models
 
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 
 class Guess {
 
@@ -11,17 +12,20 @@ class Guess {
     var guess = Array(GUESS_SIZE) { GuessChar() }
         private set
 
+    var currentChar = mutableStateOf(0)
+        private set
+
     var isGuessChecked = false
         private set
 
-    fun insertChar(char: Char, currentChar: MutableState<Int>) {
+    fun insertChar(char: Char) {
         if (currentChar.value in 0 until GUESS_SIZE) {
             guess[currentChar.value].char = char
             currentChar.value++
         }
     }
 
-    fun deleteChar(currentChar: MutableState<Int>) {
+    fun deleteChar() {
         if (currentChar.value in 1..GUESS_SIZE) {
             guess[currentChar.value - 1].char = null
             currentChar.value--

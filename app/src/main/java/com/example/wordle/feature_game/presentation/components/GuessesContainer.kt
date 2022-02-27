@@ -12,8 +12,7 @@ import com.example.wordle.feature_game.presentation.GameViewModel
 @Composable
 fun GuessContainer(
     guesses: SnapshotStateList<Guess>,
-    currentGuess: MutableState<Int>,
-    currentChar: MutableState<Int>
+    currentGuess: MutableState<Int>
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -22,7 +21,7 @@ fun GuessContainer(
             WordGuessContainer(
                 guess = guess,
                 currentGuess = index == currentGuess.value,
-                currentChar = currentChar
+                currentChar = guess.currentChar
             )
         }
     }
@@ -33,10 +32,9 @@ fun GuessContainer(
 fun previewGuessContainer() {
     var guesses = remember { mutableStateListOf<Guess>() }
     var currentGuess = remember { mutableStateOf(0) }
-    var currentChar = remember { mutableStateOf(0) }
     for (i in 1..GameViewModel.MAX_GUESSES) {
         guesses.add(Guess())
     }
 
-    GuessContainer(guesses = guesses, currentGuess = currentGuess, currentChar = currentChar)
+    GuessContainer(guesses = guesses, currentGuess = currentGuess)
 }

@@ -1,12 +1,15 @@
 package com.example.wordle.feature_game.presentation.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
@@ -16,6 +19,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.wordle.ui.theme.WordleTheme
+import com.example.wordle.ui.theme.*
 
 @Composable
 fun KeyboardComponent(
@@ -29,57 +34,52 @@ fun KeyboardComponent(
     val lowKeys = listOf('z', 'x', 'c', 'v', 'b', 'n', 'm')
 
     val allKeys = listOf(upperKeys, midKeys, lowKeys)
-
-    Column(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(2.dp)
-    ) {
-        for (keyGroup in allKeys) {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(2.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                for (key in keyGroup) {
-                    Text(
-                        modifier = Modifier
-                            .size(32.dp)
-                            .clickable { insertChar(key) }
-                            .background(
-                                color = if (wrongChars.contains(key)) Color.DarkGray else Color.Transparent,
-                                shape = RoundedCornerShape(5.dp)
-                            ),
-                        text = key.toString(),
-                        fontSize = 24.sp,
-                        textAlign = TextAlign.Center,
-                    )
-                    if (key == 'm') {
-                        Box(
+    WordleTheme {
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(2.dp)
+        ) {
+            for (keyGroup in allKeys) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(2.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    for (key in keyGroup) {
+                        Text(
                             modifier = Modifier
-                                .padding(start = 14.dp)
-                                .border(
-                                    width = 1.dp,
-                                    color = Color.Black,
-                                    shape = RoundedCornerShape(2.dp),
-                                )
-                                .clickable { deleteChar() }, contentAlignment = Alignment.Center
-                        ) {
-                            Text(
+                                .size(32.dp)
+                                .clickable { insertChar(key) }
+                                .background(
+                                    color = if (wrongChars.contains(key)) CandyPink else Color.Transparent,
+                                    shape = RoundedCornerShape(5.dp)
+                                ),
+                            text = key.toString(),
+                            fontSize = 24.sp,
+                            textAlign = TextAlign.Center,
+                        )
+                        if (key == 'm') {
+                            Box(
                                 modifier = Modifier
-                                    .padding(horizontal = 8.dp, vertical = 4.dp),
-                                text = "clear",
-                            )
+                                    .padding(start = 16.dp)
+                                    .clickable { deleteChar() }, contentAlignment = Alignment.Center
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Rounded.ArrowBack,
+                                    contentDescription = "Backspace"
+                                )
+                            }
                         }
                     }
                 }
             }
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = { checkGuess() }) { Text(text = "MAKE GUESS", style = MaterialTheme.typography.body1) }
         }
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(
-            modifier = Modifier.fillMaxWidth(),
-            onClick = { checkGuess() }) { Text(text = "CHECK") }
     }
 }
 

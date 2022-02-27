@@ -1,41 +1,38 @@
 package com.example.wordle.feature_game.presentation
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.window.Dialog
+import com.example.wordle.feature_game.domain.models.GameResult
+import com.example.wordle.feature_game.presentation.components.DialogContainer
 import com.example.wordle.feature_game.presentation.components.GuessContainer
 import com.example.wordle.feature_game.presentation.components.KeyboardComponent
+import com.example.wordle.ui.theme.WordleTheme
 
 @Composable
 fun GameScreen(gameViewModel: GameViewModel) {
-    gameViewModel.startGame()
+    if (!gameViewModel.gameStarted) gameViewModel.startGame()
 
-
-    MaterialTheme {
+    WordleTheme() {
         Scaffold(Modifier.fillMaxSize()) {
-            if (gameViewModel.correctGuess.value) {
-                Dialog(onDismissRequest = gameViewModel::setCorrectGuess) {
-                    Text(text = "Correct guess")
-                }
+
+            when (gameViewModel.gameStatus.value) {
+                GameResult.WON -> DialogContainer(resetGame = gameViewModel::resetGame, GameResult.WON)
+                GameResult.LOST -> DialogContainer(resetGame = gameViewModel::resetGame, GameResult.LOST)
+                GameResult.PLAYING -> {}
             }
+
             Column(
-                Modifier.fillMaxSize(),
+                Modifier
+                    .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceEvenly
+                verticalArrangement = Arrangement.SpaceAround
             ) {
-                Text(text = "Wordle!", style = MaterialTheme.typography.h4)
-
-
                 GuessContainer(
                     guesses = gameViewModel.guesses,
-                    currentGuess = gameViewModel.currentGuess,
-                    currentChar = gameViewModel.currentChar
+                    currentGuess = gameViewModel.currentGuess
                 )
 
                 KeyboardComponent(
@@ -48,9 +45,3 @@ fun GameScreen(gameViewModel: GameViewModel) {
         }
     }
 }
-
-//@Preview(showBackground = true)
-//@Composable
-//fun previewGameScreen() {
-//    GameScreen(gameViewModel = GameViewModel())
-//}
