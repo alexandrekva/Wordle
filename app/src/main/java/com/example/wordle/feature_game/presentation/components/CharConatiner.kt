@@ -20,8 +20,6 @@ import com.example.wordle.feature_game.domain.models.GuessChar
 
 @Composable
 fun CharContainer(guessChar: GuessChar, currentGuess: Boolean, currentChar: Boolean) {
-
-    WordleTheme {
         Box(
             modifier = Modifier
                 .size(48.dp)
@@ -45,7 +43,6 @@ fun CharContainer(guessChar: GuessChar, currentGuess: Boolean, currentChar: Bool
             )
         }
     }
-}
 
 @Preview(showBackground = true)
 @Composable

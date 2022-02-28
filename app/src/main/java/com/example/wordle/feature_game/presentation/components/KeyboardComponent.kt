@@ -19,7 +19,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.wordle.ui.theme.WordleTheme
 import com.example.wordle.ui.theme.*
 
 @Composable
@@ -34,54 +33,58 @@ fun KeyboardComponent(
     val lowKeys = listOf('z', 'x', 'c', 'v', 'b', 'n', 'm')
 
     val allKeys = listOf(upperKeys, midKeys, lowKeys)
-    WordleTheme {
-        Column(
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(2.dp)
-        ) {
-            for (keyGroup in allKeys) {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(2.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    for (key in keyGroup) {
-                        Text(
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(2.dp)
+    ) {
+        for (keyGroup in allKeys) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(2.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                for (key in keyGroup) {
+                    Text(
+                        modifier = Modifier
+                            .size(32.dp)
+                            .clickable { insertChar(key) }
+                            .background(
+                                color = if (wrongChars.contains(key)) CandyPink else Color.Transparent,
+                                shape = RoundedCornerShape(5.dp)
+                            ),
+                        text = key.toString(),
+                        fontSize = 24.sp,
+                        textAlign = TextAlign.Center,
+                    )
+                    if (key == 'm') {
+                        Box(
                             modifier = Modifier
-                                .size(32.dp)
-                                .clickable { insertChar(key) }
-                                .background(
-                                    color = if (wrongChars.contains(key)) CandyPink else Color.Transparent,
-                                    shape = RoundedCornerShape(5.dp)
-                                ),
-                            text = key.toString(),
-                            fontSize = 24.sp,
-                            textAlign = TextAlign.Center,
-                        )
-                        if (key == 'm') {
-                            Box(
-                                modifier = Modifier
-                                    .padding(start = 16.dp)
-                                    .clickable { deleteChar() }, contentAlignment = Alignment.Center
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Rounded.ArrowBack,
-                                    contentDescription = "Backspace"
-                                )
-                            }
+                                .padding(start = 16.dp)
+                                .clickable { deleteChar() }, contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                imageVector = Icons.Rounded.ArrowBack,
+                                contentDescription = "Backspace"
+                            )
                         }
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(16.dp))
-            Button(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = { checkGuess() }) { Text(text = "MAKE GUESS", style = MaterialTheme.typography.body1) }
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = { checkGuess() }) {
+            Text(
+                text = "MAKE GUESS",
+                style = MaterialTheme.typography.body1
+            )
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable

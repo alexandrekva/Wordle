@@ -3,16 +3,24 @@ package com.example.wordle.feature_game.presentation
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+
 import com.example.wordle.feature_game.domain.models.CheckCharEnum
-import com.example.wordle.feature_game.domain.models.GameResult
+import com.example.wordle.feature_game.domain.models.GameResultEnum
 import com.example.wordle.feature_game.domain.models.Guess
 import com.example.wordle.feature_game.domain.models.GuessChar
 
-class GameViewModel : ViewModel() {
+class GameViewModel: ViewModel() {
 
     companion object {
         const val MAX_GUESSES = 6
     }
+
+    private val wordsList = listOf(
+        "doido", "horda", "carma", "linda", "marco", "jovem", "inata", "xeque", "capaz", "fonte",
+        "relva", "ajuda", "tenra", "algum", "anuir", "velar", "ficar", "noite", "apoio", "dorso",
+        "vimos", "rigor", "verso", "botar", "vazio", "tanto", "prece", "cruel", "morar", "terra",
+        "ambas", "frase", "peste"
+    )
 
     var guesses = mutableStateListOf<Guess>()
         private set
@@ -23,24 +31,24 @@ class GameViewModel : ViewModel() {
     var wrongChars = mutableStateListOf<Char>()
         private set
 
-    var gameStatus = mutableStateOf(GameResult.PLAYING)
+    var gameStatus = mutableStateOf(GameResultEnum.NOT_STARTED)
         private set
 
-    var gameStarted = false
-        private set
-
-    private var word = "barco"
+    var gameWord = ""
 
     fun startGame() {
+        gameWord = getRandomWord()
+
         for (i in 1..MAX_GUESSES) {
             guesses.add(Guess())
         }
 
-        gameStarted = true
+        gameStatus.value = GameResultEnum.PLAYING
     }
 
     fun resetGame() {
-        gameStatus.value = GameResult.PLAYING
+        gameStatus.value = GameResultEnum.PLAYING
+        gameWord = getRandomWord()
         wrongChars.clear()
         currentGuess.value = 0
 
@@ -60,18 +68,14 @@ class GameViewModel : ViewModel() {
         updateGuessState()
     }
 
-    fun setGameStatus(status: GameResult) {
-        gameStatus.value = status
-    }
-
     fun checkGuess() {
         if (!guesses[currentGuess.value].guess.contains(GuessChar())) {
             when {
-                guesses[currentGuess.value].checkGuess(word) -> {
-                    gameStatus.value = GameResult.WON
+                guesses[currentGuess.value].checkGuess(gameWord) -> {
+                    gameStatus.value = GameResultEnum.WON
                 }
                 currentGuess.value == MAX_GUESSES - 1 -> {
-                    gameStatus.value = GameResult.LOST
+                    gameStatus.value = GameResultEnum.LOST
                 }
                 else -> {
                     addWrongChars(guesses[currentGuess.value].guess)
@@ -93,8 +97,13 @@ class GameViewModel : ViewModel() {
         this.wrongChars.addAll(wrongChars)
     }
 
+    private fun getRandomWord(): String {
+        val randomWordPosition = wordsList.indices.random()
+
+        return wordsList[randomWordPosition]
+    }
+
     private fun updateGuessState() {
         guesses[currentGuess.value] = guesses[currentGuess.value]
     }
-
 }

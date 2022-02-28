@@ -5,7 +5,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.example.wordle.feature_game.domain.models.GameResult
+import com.example.wordle.feature_game.domain.models.GameResultEnum
 import com.example.wordle.feature_game.presentation.components.DialogContainer
 import com.example.wordle.feature_game.presentation.components.GuessContainer
 import com.example.wordle.feature_game.presentation.components.KeyboardComponent
@@ -13,15 +13,23 @@ import com.example.wordle.ui.theme.WordleTheme
 
 @Composable
 fun GameScreen(gameViewModel: GameViewModel) {
-    if (!gameViewModel.gameStarted) gameViewModel.startGame()
+    if (gameViewModel.gameStatus.value == GameResultEnum.NOT_STARTED) gameViewModel.startGame()
 
     WordleTheme() {
         Scaffold(Modifier.fillMaxSize()) {
 
             when (gameViewModel.gameStatus.value) {
-                GameResult.WON -> DialogContainer(resetGame = gameViewModel::resetGame, GameResult.WON)
-                GameResult.LOST -> DialogContainer(resetGame = gameViewModel::resetGame, GameResult.LOST)
-                GameResult.PLAYING -> {}
+                GameResultEnum.WON -> DialogContainer(
+                    resetGame = gameViewModel::resetGame,
+                    GameResultEnum.WON,
+                    gameViewModel.gameWord
+                )
+                GameResultEnum.LOST -> DialogContainer(
+                    resetGame = gameViewModel::resetGame,
+                    GameResultEnum.LOST,
+                    gameViewModel.gameWord
+                )
+                GameResultEnum.PLAYING -> {}
             }
 
             Column(
