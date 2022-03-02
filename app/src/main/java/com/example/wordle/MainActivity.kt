@@ -3,18 +3,22 @@ package com.example.wordle
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
-import com.example.wordle.feature_game.presentation.GameScreen
-import com.example.wordle.feature_game.presentation.GameViewModel
+import androidx.navigation.compose.rememberNavController
+import com.example.wordle.navigation.Screens
+import com.example.wordle.navigation.SetupNavGraph
+import com.example.wordle.ui.theme.WordleTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
-    private val gameViewModel by viewModels<GameViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            GameScreen(gameViewModel)
+            WordleTheme {
+                val navController = rememberNavController()
+                SetupNavGraph(navController = navController, startDestination = Screens.Onboard.route)
+            }
         }
     }
 }

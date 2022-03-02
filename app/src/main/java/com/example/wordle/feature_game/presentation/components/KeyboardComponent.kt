@@ -48,7 +48,7 @@ fun KeyboardComponent(
                 for (key in keyGroup) {
                     Text(
                         modifier = Modifier
-                            .size(32.dp)
+                            .size(34.dp)
                             .clickable { insertChar(key) }
                             .background(
                                 color = if (wrongChars.contains(key)) CandyPink else Color.Transparent,
@@ -73,12 +73,12 @@ fun KeyboardComponent(
                 }
             }
         }
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(32.dp))
         Button(
             modifier = Modifier.fillMaxWidth(),
             onClick = { checkGuess() }) {
             Text(
-                text = "MAKE GUESS",
+                text = "Adivinhar",
                 style = MaterialTheme.typography.body1
             )
         }
