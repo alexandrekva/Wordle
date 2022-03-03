@@ -11,7 +11,7 @@ import com.example.wordle.feature_onboard.presentation.OnboardScreen
 fun SetupNavGraph(navController: NavHostController, startDestination: String) {
     NavHost(navController = navController, startDestination = startDestination) {
         composable(route = Screens.Onboard.route) {
-            OnboardScreen()
+            OnboardScreen(navController = navController)
         }
         composable(route = Screens.Game.route) {
             GameScreen()
