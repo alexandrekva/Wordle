@@ -1,6 +1,9 @@
 package com.example.wordle.feature_game.di
 
-import com.example.wordle.feature_game.data.WordsRepository
+import com.example.wordle.feature_game.data.local.WordsHardCodedData
+import com.example.wordle.feature_game.data.repository.WordsRepositoryImpl
+import com.example.wordle.feature_game.domain.repository.WordsRepository
+import com.example.wordle.feature_game.domain.use_cases.GetRandomWordUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,5 +16,20 @@ class WordsModule {
 
     @Provides
     @Singleton
-    fun provideWordsRepository() = WordsRepository()
+    fun provideWordsHardCodedData(): WordsHardCodedData {
+        return WordsHardCodedData()
+    }
+
+    @Provides
+    @Singleton
+    fun provideWordsRepository(wordsHardCodedData: WordsHardCodedData): WordsRepository {
+        return WordsRepositoryImpl(wordsHardCodedData)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetRandomWordUseCase(wordsRepository: WordsRepository) =
+        GetRandomWordUseCase(wordsRepository = wordsRepository)
+
+
 }

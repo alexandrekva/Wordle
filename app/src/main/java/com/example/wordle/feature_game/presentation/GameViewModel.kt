@@ -4,11 +4,11 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.wordle.feature_game.data.WordsRepository
 import com.example.wordle.feature_game.domain.models.CheckCharEnum
 import com.example.wordle.feature_game.domain.models.GameResultEnum
 import com.example.wordle.feature_game.domain.models.Guess
 import com.example.wordle.feature_game.domain.models.GuessChar
+import com.example.wordle.feature_game.domain.use_cases.GetRandomWordUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GameViewModel @Inject constructor(
-    private val repository: WordsRepository
+    private val getRandomWordUseCase: GetRandomWordUseCase
 ) : ViewModel() {
 
     companion object {
@@ -39,37 +39,29 @@ class GameViewModel @Inject constructor(
 
     fun startGame() {
         viewModelScope.launch {
-            repository.getRandomWord().collect { word ->
-                if (word != null) {
-                    gameWord = word
+            getRandomWordUseCase.execute().collect { randomWord ->
+                gameWord = randomWord
 
-                    for (i in 1..MAX_GUESSES) {
-                        guesses.add(Guess())
-                    }
-
-                    gameStatus.value = GameResultEnum.PLAYING
-                } else {
-
+                for (i in 1..MAX_GUESSES) {
+                    guesses.add(Guess())
                 }
+
+                gameStatus.value = GameResultEnum.PLAYING
             }
         }
     }
 
     fun resetGame() {
         viewModelScope.launch {
-            repository.getRandomWord().collect { word ->
-                if (word != null) {
-                    gameStatus.value = GameResultEnum.PLAYING
-                    gameWord = word
-                    wrongChars.clear()
-                    currentGuess.value = 0
-                    guesses.clear()
+            getRandomWordUseCase.execute().collect { word ->
+                gameStatus.value = GameResultEnum.PLAYING
+                gameWord = word
+                wrongChars.clear()
+                currentGuess.value = 0
+                guesses.clear()
 
-                    for (i in 1..MAX_GUESSES) {
-                        guesses.add(Guess())
-                    }
-                } else {
-
+                for (i in 1..MAX_GUESSES) {
+                    guesses.add(Guess())
                 }
             }
         }

@@ -17,18 +17,18 @@ class OnboardViewModel @Inject constructor(
     private val onboardRepository: OnboardRepository
 ) : ViewModel() {
 
-    private val _isLoading: MutableState<Boolean> = mutableStateOf(true)
-    val isLoading: State<Boolean> = _isLoading
+    var isLoading = mutableStateOf(true)
+        private set
 
-    private val _startDestination: MutableState<String> = mutableStateOf(Screens.Onboard.route)
-    val startDestination: State<String> = _startDestination
+    var startDestination = mutableStateOf(Screens.Onboard.route)
+        private set
 
     init {
         viewModelScope.launch {
             onboardRepository.readOnboardState().collect { completed ->
-                _startDestination.value =
+                startDestination.value =
                     if (completed) Screens.Game.route else Screens.Onboard.route
-                _isLoading.value = false
+                isLoading.value = false
             }
         }
     }

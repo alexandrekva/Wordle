@@ -1,9 +1,6 @@
-package com.example.wordle.feature_game.data
+package com.example.wordle.feature_game.data.local
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-
-class WordsRepository {
+class WordsHardCodedData : WordsDAO {
     private val wordsList = mutableListOf(
         "doido", "horda", "carma", "linda", "marco", "jovem", "inata", "xeque", "capaz", "fonte",
         "relva", "ajuda", "tenra", "algum", "anuir", "velar", "ficar", "noite", "apoio", "dorso",
@@ -11,12 +8,8 @@ class WordsRepository {
         "ambas", "frase", "peste"
     )
 
-    fun getRandomWord(): Flow<String?> = flow {
-        if (wordsList.size > 0) {
+    override suspend fun getRandomWord(): String {
             val randomWordPosition = wordsList.indices.random()
-            emit(wordsList.removeAt(randomWordPosition))
-        } else {
-            emit(null)
-        }
+            return wordsList[randomWordPosition]
     }
 }

@@ -1,6 +1,5 @@
 package com.example.wordle.feature_game.domain.models
 
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 
 class Guess {
