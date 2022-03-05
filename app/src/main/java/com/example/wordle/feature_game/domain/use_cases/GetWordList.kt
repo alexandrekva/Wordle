@@ -4,8 +4,8 @@ import com.example.wordle.feature_game.domain.repository.WordsRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetRandomWordUseCase @Inject constructor(private val wordsRepository: WordsRepository) {
-    fun execute(): Flow<String> {
-        return wordsRepository.getRandomWord()
+class GetWordList @Inject constructor(private val wordsRepository: WordsRepository) {
+    fun execute(): Flow<List<String>> {
+        return wordsRepository.getAllWords()
     }
 }

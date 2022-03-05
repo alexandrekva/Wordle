@@ -8,8 +8,7 @@ class WordsHardCodedData : WordsDAO {
         "ambas", "frase", "peste"
     )
 
-    override suspend fun getRandomWord(): String {
-            val randomWordPosition = wordsList.indices.random()
-            return wordsList[randomWordPosition]
+    override suspend fun getAllWords(): List<String> {
+            return wordsList
     }
 }

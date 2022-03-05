@@ -13,5 +13,5 @@
     <color name="CandyPink">#E0777D</color>
     <color name="DarkOverlay">#1A757575</color>
 
-    <color name="Background">@color/Cultured</color>
+    <color name="Background">@color/BlackOlive</color>
 </resources>

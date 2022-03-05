@@ -6,9 +6,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class WordsRepositoryImpl(private val wordsDAO: WordsDAO): WordsRepository{
-    override fun getRandomWord(): Flow<String> = flow {
-        val randomWord = wordsDAO.getRandomWord()
-        emit(randomWord)
+    override fun getAllWords(): Flow<List<String>> = flow {
+        emit(wordsDAO.getAllWords())
     }
 
 }

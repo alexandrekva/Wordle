@@ -1,4 +1,4 @@
-package com.example.wordle.feature_onboard.data
+package com.example.wordle.core.data
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.flow
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "onboard_pref")
 
-class OnboardRepository(context: Context) {
+class PreferencesRepository(context: Context) {
 
     private val dataStore = context.dataStore
 

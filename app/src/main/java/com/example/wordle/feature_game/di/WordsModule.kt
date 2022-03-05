@@ -3,7 +3,7 @@ package com.example.wordle.feature_game.di
 import com.example.wordle.feature_game.data.local.WordsHardCodedData
 import com.example.wordle.feature_game.data.repository.WordsRepositoryImpl
 import com.example.wordle.feature_game.domain.repository.WordsRepository
-import com.example.wordle.feature_game.domain.use_cases.GetRandomWordUseCase
+import com.example.wordle.feature_game.domain.use_cases.GetWordList
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,7 +29,7 @@ class WordsModule {
     @Provides
     @Singleton
     fun provideGetRandomWordUseCase(wordsRepository: WordsRepository) =
-        GetRandomWordUseCase(wordsRepository = wordsRepository)
+        GetWordList(wordsRepository = wordsRepository)
 
 
 }

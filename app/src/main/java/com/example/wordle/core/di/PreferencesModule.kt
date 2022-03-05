@@ -1,7 +1,7 @@
-package com.example.wordle.feature_onboard.di
+package com.example.wordle.core.di
 
 import android.content.Context
-import com.example.wordle.feature_onboard.data.OnboardRepository
+import com.example.wordle.core.data.PreferencesRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,10 +11,10 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object OnboardModule {
+object PreferencesModule {
 
     @Provides
     @Singleton
     fun provideOnboardRepository(@ApplicationContext context: Context) =
-        OnboardRepository(context = context)
+        PreferencesRepository(context = context)
 }

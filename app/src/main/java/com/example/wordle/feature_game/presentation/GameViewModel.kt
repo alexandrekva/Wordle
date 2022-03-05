@@ -8,7 +8,7 @@ import com.example.wordle.feature_game.domain.models.CheckCharEnum
 import com.example.wordle.feature_game.domain.models.GameResultEnum
 import com.example.wordle.feature_game.domain.models.Guess
 import com.example.wordle.feature_game.domain.models.GuessChar
-import com.example.wordle.feature_game.domain.use_cases.GetRandomWordUseCase
+import com.example.wordle.feature_game.domain.use_cases.GetWordList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GameViewModel @Inject constructor(
-    private val getRandomWordUseCase: GetRandomWordUseCase
+    private val getWordList: GetWordList
 ) : ViewModel() {
 
     companion object {
@@ -35,36 +35,41 @@ class GameViewModel @Inject constructor(
     var gameStatus = mutableStateOf(GameResultEnum.NOT_STARTED)
         private set
 
+    private val wordsList = mutableListOf<String>()
+
     var gameWord = ""
+        private set
 
     fun startGame() {
         viewModelScope.launch {
-            getRandomWordUseCase.execute().collect { randomWord ->
-                gameWord = randomWord
-
-                for (i in 1..MAX_GUESSES) {
-                    guesses.add(Guess())
-                }
-
+            getWordList.execute().collect { wordsList ->
+                this@GameViewModel.wordsList.addAll(wordsList)
+                gameWord = getRandomWord()
+                createEmptyGuesses()
                 gameStatus.value = GameResultEnum.PLAYING
             }
         }
     }
 
     fun resetGame() {
-        viewModelScope.launch {
-            getRandomWordUseCase.execute().collect { word ->
-                gameStatus.value = GameResultEnum.PLAYING
-                gameWord = word
-                wrongChars.clear()
-                currentGuess.value = 0
-                guesses.clear()
+        gameStatus.value = GameResultEnum.PLAYING
+        gameWord = getRandomWord()
+        wrongChars.clear()
+        currentGuess.value = 0
+        createEmptyGuesses()
+    }
 
-                for (i in 1..MAX_GUESSES) {
-                    guesses.add(Guess())
-                }
-            }
+    private fun createEmptyGuesses() {
+        guesses.clear()
+
+        for (i in 1..MAX_GUESSES) {
+            guesses.add(Guess())
         }
+    }
+
+    private fun getRandomWord(): String {
+        val randomWordPosition = wordsList.indices.random()
+        return wordsList.removeAt(randomWordPosition)
     }
 
     fun insertChar(char: Char) {
