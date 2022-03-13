@@ -36,12 +36,13 @@ fun OnboardScreen(
         Column(Modifier.fillMaxSize()) {
             HorizontalPager(
                 modifier = Modifier.weight(10f),
-                count = 2,
+                count = 3,
                 state = pagerState,
             ) { position ->
                 when (position) {
                     0 -> FirstOnboardScreen()
                     1 -> SecondOnboardScreen()
+                    2 -> ThirdOnboardScreen()
                 }
 
             }
@@ -56,7 +57,7 @@ fun OnboardScreen(
                 .padding(horizontal = 24.dp)) {
                 AnimatedVisibility(
                     modifier = Modifier.fillMaxWidth(),
-                    visible = pagerState.currentPage == 1,
+                    visible = pagerState.currentPage == 2,
                     enter = fadeIn() + expandHorizontally(),
                     exit = fadeOut() + shrinkHorizontally()
                 ) {
@@ -67,7 +68,7 @@ fun OnboardScreen(
                         navController.popBackStack()
                         navController.navigate(Screens.Game.route)
                     }) {
-                        Text(text = "ENTENDI")
+                        Text(text = "Entendi, quero jogar!")
                     }
                 }
             }
@@ -108,7 +109,9 @@ fun FirstOnboardScreen() {
 @Composable
 fun SecondOnboardScreen() {
     Column(
-        Modifier.padding(horizontal = 24.dp),
+        Modifier
+            .fillMaxSize()
+            .padding(horizontal = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(64.dp)
     ) {
@@ -146,12 +149,40 @@ fun SecondOnboardScreen() {
                 textAlign = TextAlign.Center
             )
             Text(
-                text = "As letras em verde fazem parte da palavra e estão na posição correta",
+                text = "As letras em amarelo fazem parte da palavra mas estão na posição errada",
                 style = MaterialTheme.typography.h6,
                 textAlign = TextAlign.Center
             )
             Text(
-                text = "As letras em amarelo fazem parte da palavra mas estão na posição errada",
+                text = "As letras em verde fazem parte da palavra e estão na posição correta",
+                style = MaterialTheme.typography.h6,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+fun ThirdOnboardScreen() {
+    Column(
+        Modifier
+            .fillMaxSize()
+            .padding(horizontal = 24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(64.dp)
+    ) {
+        Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+            for (c in "jogar")
+                CharContainer(
+                    guessChar = GuessChar(char = c, status = CheckCharEnum.CHAR_IN_PLACE),
+                    currentGuess = false,
+                    currentChar = false
+                )
+        }
+        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            Text(
+                text = "Encontramos a palavra escondida!",
                 style = MaterialTheme.typography.h6,
                 textAlign = TextAlign.Center
             )

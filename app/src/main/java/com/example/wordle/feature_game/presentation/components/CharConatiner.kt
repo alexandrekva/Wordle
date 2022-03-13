@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -20,29 +19,37 @@ import com.example.wordle.feature_game.domain.models.GuessChar
 
 @Composable
 fun CharContainer(guessChar: GuessChar, currentGuess: Boolean, currentChar: Boolean) {
-        Box(
-            modifier = Modifier
-                .size(48.dp)
-                .background(color = if (currentGuess) DarkOverlay else Color.Transparent)
-                .border(
-                    width = 2.dp,
-                    color = when (guessChar.status) {
-                        CheckCharEnum.CHAR_IN_PLACE -> Emerald
-                        CheckCharEnum.CHAR_OUT_OF_PLACE -> MaximumYellowRed
-                        CheckCharEnum.WRONG_CHAR -> CandyPink
-                        else -> MaterialTheme.colors.onBackground
-                    },
-                    shape = RoundedCornerShape(10.dp)
-                ),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = guessChar.char?.toString() ?: "  ",
-                style = if (currentChar) MaterialTheme.typography.h4.copy(textDecoration = TextDecoration.Underline) else MaterialTheme.typography.h4,
+
+    val borderColor = when (guessChar.status) {
+        CheckCharEnum.CHAR_IN_PLACE -> Emerald
+        CheckCharEnum.CHAR_OUT_OF_PLACE -> MaximumYellowRed
+        CheckCharEnum.WRONG_CHAR -> CandyPink
+        else -> MaterialTheme.colors.onBackground
+    }
+
+    val backgroundColor = if (currentGuess) DarkOverlay else Color.Transparent
+
+    val textStyle =
+        if (currentChar) MaterialTheme.typography.h4.copy(textDecoration = TextDecoration.Underline) else MaterialTheme.typography.h4
+
+    Box(
+        modifier = Modifier
+            .size(48.dp)
+            .background(color = backgroundColor)
+            .border(
+                width = 2.dp,
+                color = borderColor,
+                shape = MaterialTheme.shapes.medium
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = guessChar.char?.toString() ?: "  ",
+            style = textStyle,
 
             )
-        }
     }
+}
 
 @Preview(showBackground = true)
 @Composable

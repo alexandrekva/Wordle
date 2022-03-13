@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wordle.ui.theme.*
+import com.example.wordle.ui.theme_extensions.spacing
 
 @Composable
 fun KeyboardComponent(
@@ -46,12 +47,14 @@ fun KeyboardComponent(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 for (key in keyGroup) {
+                    val backgroundColor = if (wrongChars.contains(key)) CandyPink else Color.Transparent
+
                     Text(
                         modifier = Modifier
                             .size(34.dp)
                             .clickable { insertChar(key) }
                             .background(
-                                color = if (wrongChars.contains(key)) CandyPink else Color.Transparent,
+                                color = backgroundColor,
                                 shape = RoundedCornerShape(5.dp)
                             ),
                         text = key.toString(),
@@ -61,7 +64,7 @@ fun KeyboardComponent(
                     if (key == 'm') {
                         Box(
                             modifier = Modifier
-                                .padding(start = 16.dp)
+                                .padding(start = MaterialTheme.spacing.medium)
                                 .clickable { deleteChar() }, contentAlignment = Alignment.Center
                         ) {
                             Icon(
@@ -73,7 +76,7 @@ fun KeyboardComponent(
                 }
             }
         }
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(MaterialTheme.spacing.large))
         Button(
             modifier = Modifier.fillMaxWidth(),
             onClick = { checkGuess() }) {

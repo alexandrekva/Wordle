@@ -2,12 +2,14 @@ package com.example.wordle.feature_game.presentation.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.wordle.feature_game.domain.models.Guess
 import com.example.wordle.feature_game.presentation.GameViewModel
+import com.example.wordle.ui.theme_extensions.spacing
 
 @Composable
 fun GuessContainer(
@@ -15,7 +17,7 @@ fun GuessContainer(
     currentGuess: MutableState<Int>
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium)
     ) {
         guesses.forEachIndexed() { index, guess ->
             WordGuessContainer(
