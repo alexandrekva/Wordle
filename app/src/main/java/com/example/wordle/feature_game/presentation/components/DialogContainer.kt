@@ -2,13 +2,11 @@ package com.example.wordle.feature_game.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.wordle.feature_game.domain.models.GameResultEnum
 import com.example.wordle.ui.theme_extensions.spacing

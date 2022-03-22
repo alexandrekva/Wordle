@@ -2,7 +2,8 @@ package com.example.wordle.feature_game.domain.models
 
 import androidx.compose.runtime.mutableStateOf
 
-class Guess {
+class
+Guess {
 
     companion object {
         const val GUESS_SIZE = 5

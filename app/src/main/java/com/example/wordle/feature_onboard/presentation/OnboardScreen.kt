@@ -109,9 +109,7 @@ fun FirstOnboardScreen() {
 @Composable
 fun SecondOnboardScreen() {
     Column(
-        Modifier
-            .fillMaxSize()
-            .padding(horizontal = 24.dp),
+        Modifier.padding(horizontal = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(64.dp)
     ) {
@@ -166,9 +164,7 @@ fun SecondOnboardScreen() {
 @Composable
 fun ThirdOnboardScreen() {
     Column(
-        Modifier
-            .fillMaxSize()
-            .padding(horizontal = 24.dp),
+        Modifier.padding(horizontal = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(64.dp)
     ) {
